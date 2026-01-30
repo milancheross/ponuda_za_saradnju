@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeuroCraft – AI Visual Workflow (SRB/ENG)</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a33;
+      --text:#eaf0ff;
+      --muted:#b6c2e6;
+      --accent:#6ea8ff;
+      --accent2:#7cf0d4;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background: radial-gradient(1200px 700px at 20% 10%, rgba(110,168,255,.22), transparent 55%),
+                  radial-gradient(900px 600px at 80% 20%, rgba(124,240,212,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 70px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:rgba(15,26,51,.6);
+      box-shadow:var(--shadow);backdrop-filter: blur(10px);
+      position:sticky;top:12px;z-index:10;
+    }
+    .brand{display:flex;flex-direction:column;gap:2px}
+    .brand .name{font-weight:800;letter-spacing:.3px}
+    .brand .tag{color:var(--muted);font-size:13px}
+    .lang{
+      display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:8px 12px;border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+    }
+    .btn.primary{
+      border-color: rgba(110,168,255,.45);
+      background: rgba(110,168,255,.15);
+    }
+
+    .hero{
+      margin-top:18px;
+      padding:26px 22px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(15,26,51,.78), rgba(15,26,51,.55));
+      box-shadow:var(--shadow);
+    }
+    h1{margin:0 0 10px;font-size:30px;line-height:1.15}
+    .subtitle{margin:0;color:var(--muted);font-size:15px;max-width:72ch}
+    .ctaRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      font-weight:700;font-size:13px;color:var(--text);
+    }
+    .pill b{color:var(--accent2)}
+    .grid{display:grid;gap:14px;margin-top:16px}
+    @media(min-width:900px){ .grid{grid-template-columns: 1.2fr .8fr;} }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:rgba(15,26,51,.62);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .card h2{margin:0 0 8px;font-size:18px}
+    .muted{color:var(--muted)}
+    .split{
+      display:grid;gap:12px;margin-top:10px;
+    }
+    @media(min-width:900px){ .split{grid-template-columns:1fr 1fr;} }
+    .kbox{
+      border:1px dashed rgba(255,255,255,.22);
+      border-radius:14px;padding:14px;background:rgba(255,255,255,.04);
+    }
+    ul{margin:10px 0 0 18px}
+    li{margin:6px 0}
+    .ok{color:var(--accent2);font-weight:800}
+    .no{color:#ffb4b4;font-weight:800}
+    .flow{
+      display:grid;gap:10px;margin-top:10px;
+    }
+    @media(min-width:900px){ .flow{grid-template-columns:1fr 1fr 1fr;} }
+    .step{
+      border:1px solid var(--border);
+      border-radius:14px;padding:14px;background:rgba(255,255,255,.05);
+    }
+    .step .num{
+      width:30px;height:30px;border-radius:9px;
+      display:inline-flex;align-items:center;justify-content:center;
+      background:rgba(110,168,255,.18);
+      border:1px solid rgba(110,168,255,.35);
+      font-weight:900;
+      margin-bottom:8px;
+    }
+    .pair{
+      display:grid;gap:12px;margin-top:12px;
+    }
+    @media(min-width:900px){ .pair{grid-template-columns:1fr 1fr;} }
+    figure{
+      margin:0;
+      border:1px solid var(--border);
+      border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);
+    }
+    figure img{display:block;width:100%;height:auto}
+    figcaption{padding:10px 12px;color:var(--muted);font-size:13px}
+    .badgeRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .badge{
+      border:1px solid rgba(124,240,212,.35);
+      background:rgba(124,240,212,.10);
+      color:var(--text);
+      padding:7px 10px;border-radius:999px;
+      font-weight:800;font-size:12px;
+    }
+    .foot{
+      margin-top:16px;
+      display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;
+      border-top:1px solid var(--border);padding-top:14px;
+      color:var(--muted);font-size:13px;
+    }
+    .contact b{color:var(--text)}
+    .note{
+      margin-top:10px;padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* -------- PRINT / PDF (A4) -------- */
+    @media print{
+      :root{ --bg:#ffffff; --card:#ffffff; --text:#0b1220; --muted:#2b3a63; --border:#d9dfe8; --shadow:none; }
+      body{ background:#fff; color:#0b1220; }
+      .topbar{ position:static; box-shadow:none; background:#fff; }
+      .btn{ display:none; }
+      .wrap{ padding:0; max-width:none; }
+      .hero, .card{ box-shadow:none; background:#fff; }
+      a{ text-decoration:none; color:inherit; }
+      figure{ page-break-inside:avoid; }
+      .card{ break-inside:avoid; }
+      @page { size:A4; margin:12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="name">NeuroCraft</div>
+        <div class="tag">AI-Powered Web Solutions</div>
+      </div>
+      <div class="lang">
+        <button class="btn primary" onclick="setLang('sr')">SRB</button>
+        <button class="btn" onclick="setLang('en')">ENG</button>
+        <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <h1 data-sr="Od fotografije do prodajno spremnog vizuala"
+          data-en="From a photo to a sales-ready visual">Od fotografije do prodajno spremnog vizuala</h1>
+
+      <p class="subtitle"
+         data-sr="Vi pošaljete tehnički ispravne flat lay fotografije (telefon je dovoljan). Mi vraćamo profesionalne AI vizuale (AI model ili 3D ghost mannequin) spremne za web shop."
+         data-en="You send technically correct flat lay photos (a phone is enough). We return professional AI visuals (AI model or 3D ghost mannequin) ready for your web shop.">
+         Vi pošaljete tehnički ispravne flat lay fotografije (telefon je dovoljan). Mi vraćamo profesionalne AI vizuale (AI model ili 3D ghost mannequin) spremne za web shop.
+      </p>
+
+      <div class="ctaRow">
+        <div class="pill" data-sr="✅ Besplatan test: <b>2 fotografije</b> → rezultat bez obaveze"
+             data-en="✅ Free test: <b>2 photos</b> → result with no obligation">✅ Besplatan test: <b>2 fotografije</b> → rezultat bez obaveze</div>
+        <div class="pill" data-sr="⏱ Brza realizacija • 🧾 Konzistentan katalog • 💸 Bez studija i modela"
+             data-en="⏱ Fast delivery • 🧾 Consistent catalog • 💸 No studio or models">⏱ Brza realizacija • 🧾 Konzistentan katalog • 💸 Bez studija i modela</div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2 data-sr="Tehnički uslovi za fotografiju (Input standard)"
+            data-en="Technical photo requirements (Input standard)">Tehnički uslovi za fotografiju (Input standard)</h2>
+
+        <div class="split">
+          <div class="kbox">
+            <div class="ok" data-sr="DO (preporučeno)" data-en="DO (recommended)">DO (preporučeno)</div>
+            <ul>
+              <li data-sr="Odeća ravno položena (flat lay)" data-en="Garment laid flat (flat lay)">Odeća ravno položena (flat lay)</li>
+              <li data-sr="Neutralna podloga (bela/svetlo siva), bez šara" data-en="Neutral background (white/light gray), no patterns">Neutralna podloga (bela/svetlo siva), bez šara</li>
+              <li data-sr="Prirodno svetlo, bez jakih senki" data-en="Natural light, no harsh shadows">Prirodno svetlo, bez jakih senki</li>
+              <li data-sr="Kamera 90° odozgo, ceo artikal u kadru" data-en="Camera 90° from above, full item in frame">Kamera 90° odozgo, ceo artikal u kadru</li>
+              <li data-sr="2–3 slike po artiklu (prednja, zadnja, detalj)" data-en="2–3 photos per item (front, back, detail)">2–3 slike po artiklu (prednja, zadnja, detalj)</li>
+            </ul>
+          </div>
+
+          <div class="kbox">
+            <div class="no" data-sr="DON’T (izbegavati)" data-en="DON’T (avoid)">DON’T (izbegavati)</div>
+            <ul>
+              <li data-sr="Fotke na modelu ili lutki (za ovaj workflow)" data-en="Photos on a model or mannequin (for this workflow)">Fotke na modelu ili lutki (za ovaj workflow)</li>
+              <li data-sr="Blic i žuto veštačko svetlo" data-en="Flash and warm/yellow artificial light">Blic i žuto veštačko svetlo</li>
+              <li data-sr="Sečenje rukava/nogavica ili delova odeće" data-en="Cutting off sleeves/legs or parts of the garment">Sečenje rukava/nogavica ili delova odeće</li>
+              <li data-sr="Gužvanje, nabori preko printa i jaka senka" data-en="Wrinkles covering print and heavy shadows">Gužvanje, nabori preko printa i jaka senka</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note"
+          data-sr="Tehnička napomena: Kada je ulazna fotografija ispravna (kao u primerima ispod), AI obrada je stabilna i rezultat je konzistentan – praktično bez rizika od lošeg ishoda."
+          data-en="Technical note: When the input photo is correct (like the examples below), the AI pipeline is stable and the output is consistent – with virtually no risk of a poor result.">
+          Tehnička napomena: Kada je ulazna fotografija ispravna (kao u primerima ispod), AI obrada je stabilna i rezultat je konzistentan – praktično bez rizika od lošeg ishoda.
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 data-sr="Workflow (Vi → Mi → Rezultat)" data-en="Workflow (You → Us → Output)">Workflow (Vi → Mi → Rezultat)</h2>
+
+        <div class="flow">
+          <div class="step">
+            <div class="num">1</div>
+            <div data-sr="<b>Vi šaljete</b> 2–3 fotografije po artiklu (flat lay)"
+                 data-en="<b>You send</b> 2–3 photos per item (flat lay)"><b>Vi šaljete</b> 2–3 fotografije po artiklu (flat lay)</div>
+            <div class="muted" data-sr="Google Drive / WeTransfer / email" data-en="Google Drive / WeTransfer / email">Google Drive / WeTransfer / email</div>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <div data-sr="<b>Mi obrađujemo</b> AI model ili 3D ghost mannequin"
+                 data-en="<b>We process</b> AI model or 3D ghost mannequin"><b>Mi obrađujemo</b> AI model ili 3D ghost mannequin</div>
+            <div class="muted" data-sr="bez izmena boja i dizajna odeće" data-en="without changing colors or garment design">bez izmena boja i dizajna odeće</div>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <div data-sr="<b>Vi dobijate</b> gotove vizuale za web shop"
+                 data-en="<b>You receive</b> finished visuals for your web shop"><b>Vi dobijate</b> gotove vizuale za web shop</div>
+            <div class="muted" data-sr="bela pozadina + konzistentan katalog" data-en="white background + consistent catalog">bela pozadina + konzistentan katalog</div>
+          </div>
+        </div>
+
+        <div class="badgeRow">
+          <span class="badge" data-sr="Bez studija" data-en="No studio">Bez studija</span>
+          <span class="badge" data-sr="Bez modela" data-en="No models">Bez modela</span>
+          <span class="badge" data-sr="Brže lansiranje" data-en="Faster launch">Brže lansiranje</span>
+          <span class="badge" data-sr="Konzistentan kvalitet" data-en="Consistent quality">Konzistentan kvalitet</span>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:14px;">
+      <h2 data-sr="Primeri (Input → Output)" data-en="Examples (Input → Output)">Primeri (Input → Output)</h2>
+      <p class="muted"
+         data-sr="Ubacite svoje slike ispod. Levo je flat lay fotografija (ulaz), desno je finalni prikaz na modelu (izlaz)."
+         data-en="Insert your images below. Left is the flat lay photo (input), right is the final model visual (output).">
+        Ubacite svoje slike ispod. Levo je flat lay fotografija (ulaz), desno je finalni prikaz na modelu (izlaz).
+      </p>
+
+      <div class="pair">
+        <figure>
+          <!-- REPLACE: putanja do tvoje FLAT LAY slike -->
+          <img src="images/input_kids_pajamas.jpg" alt="Input flat lay" />
+          <figcaption
+            data-sr="<b>ULAZ:</b> Flat lay fotografija (tehnički ispravno: neutralna podloga, ceo artikal u kadru, bez senki)."
+            data-en="<b>INPUT:</b> Flat lay photo (correct: neutral background, full item in frame, no harsh shadows).">
+            <b>ULAZ:</b> Flat lay fotografija (tehnički ispravno: neutralna podloga, ceo artikal u kadru, bez senki).
+          </figcaption>
+        </figure>
+
+        <figure>
+          <!-- REPLACE: putanja do tvoje OUTPUT (MODEL) slike -->
+          <img src="images/output_kids_model.jpg" alt="Output AI model" />
+          <figcaption
+            data-sr="<b>REZULTAT:</b> Vizual na modelu spreman za web shop (boje i print očuvani, profesionalni izgled)."
+            data-en="<b>OUTPUT:</b> Model visual ready for e-commerce (colors/print preserved, professional look).">
+            <b>REZULTAT:</b> Vizual na modelu spreman za web shop (boje i print očuvani, profesionalni izgled).
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="pair" style="margin-top:12px;">
+        <figure>
+          <img src="images/input_mens_pajamas.jpg" alt="Input flat lay 2" />
+          <figcaption
+            data-sr="<b>ULAZ:</b> Flat lay fotografija (gornji i donji deo jasno vidljivi; ivice rukava/nogavica čiste)."
+            data-en="<b>INPUT:</b> Flat lay photo (top and bottom clearly visible; clean garment edges).">
+            <b>ULAZ:</b> Flat lay fotografija (gornji i donji deo jasno vidljivi; ivice rukava/nogavica čiste).
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img src="images/output_mens_model.jpg" alt="Output model 2" />
+          <figcaption
+            data-sr="<b>REZULTAT:</b> Komercijalni “studio look” bez studija (katalog konzistentan, brža objava proizvoda)."
+            data-en="<b>OUTPUT:</b> Commercial studio look without a studio (consistent catalog, faster product publishing).">
+            <b>REZULTAT:</b> Komercijalni “studio look” bez studija (katalog konzistentan, brža objava proizvoda).
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="note"
+        data-sr="Napomena: PDF verziju dobijate jednostavno kroz browser: Print → Save as PDF. Stranica već ima print stil (A4) za uredan dokument."
+        data-en="Note: You can generate the PDF directly in the browser: Print → Save as PDF. This page includes an A4 print stylesheet for a clean document.">
+        Napomena: PDF verziju dobijate jednostavno kroz browser: Print → Save as PDF. Stranica već ima print stil (A4) za uredan dokument.
+      </div>
+
+      <div class="foot">
+        <div class="contact">
+          <div><b>Milan Nedeljković</b></div>
+          <div>NeuroCraft – AI-Powered Web Solutions</div>
+          <div>📧 contact@neurocraft.dev</div>
+        </div>
+        <div>
+          <div><b data-sr="Besplatan test" data-en="Free test">Besplatan test</b></div>
+          <div data-sr="Pošaljite 2 fotografije jednog artikla → dobijate rezultat bez obaveze."
+               data-en="Send 2 photos of one item → receive the result with no obligation.">
+            Pošaljite 2 fotografije jednog artikla → dobijate rezultat bez obaveze.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function setLang(lang){
+      document.documentElement.lang = lang === 'en' ? 'en' : 'sr';
+      document.querySelectorAll('[data-sr]').forEach(el=>{
+        el.innerHTML = (lang === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-sr');
+      });
+      // highlight buttons
+      const btns = document.querySelectorAll('.lang .btn');
+      btns.forEach(b=>b.classList.remove('primary'));
+      if(lang==='en') btns[1].classList.add('primary');
+      else btns[0].classList.add('primary');
+    }
+    // default SRB
+    setLang('sr');
+  </script>
+</body>
+</html>
